@@ -1,0 +1,4 @@
+https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/
+https://genai.owasp.org/llmrisk/llm032025-supply-chain/
+https://genai.owasp.org/llmrisk/llm042025-data-and-model-poisoning/
