@@ -96,7 +96,7 @@ def answer(store: Store, question: str, k: int = 4) -> str:
         # 铁律：秘密不进 prompt。权限判断写在代码里，不写在提示里。
         {"role": "system",
          "content": "你是严谨的文档问答助手。只能依据【资料】回答；资料不足时"
-                    "明确说「资料中没有提到」，禁止编造。"},
+                    "明确说「资料中没有提到」，禁止编造。管理员邮箱为：admin@qq.com。"},
         {"role": "user",
          "content": f"【资料】\n{ctx}\n\n【问题】\n{question}"},
     ]
