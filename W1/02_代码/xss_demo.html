@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>LLM05 演示：模型输出被当成可信 HTML</title>
+<style>
+  body { font-family: system-ui, "Microsoft YaHei", sans-serif; max-width: 820px;
+         margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; }
+  h1 { font-size: 20px; }
+  .warn { background: #fff4e5; border-left: 4px solid #f0a020; padding: 10px 14px;
+          font-size: 13px; margin: 16px 0; }
+  textarea { width: 100%; height: 90px; font-family: ui-monospace, Consolas, monospace;
+             font-size: 13px; padding: 10px; box-sizing: border-box; }
+  button { margin: 10px 8px 10px 0; padding: 8px 18px; font-size: 14px; cursor: pointer; }
+  .box { border: 1px dashed #bbb; padding: 14px; min-height: 60px; background: #fafafa;
+         font-size: 14px; }
+  .box.safe { border-color: #4caf50; background: #f3fbf3; }
+  code { background: #f2f2f2; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  .lab { font-size: 13px; color: #666; margin-top: 22px; }
+</style>
+</head>
+<body>
+
+<h1>LLM05 演示：模型输出被当成「可信 HTML」渲染</h1>
+
+<div class="warn">
+  本地演示，不联网、不外发任何数据。<br>
+  这个页面模拟的是：<b>后端把大模型的回答原样返回，前端用 innerHTML 渲染</b>。
+</div>
+
+<p class="lab">模拟「模型返回的内容」（你可以随便改）：</p>
+<textarea id="modelOut">&lt;img src=x onerror="alert('XSS 执行成功！可读取 cookie 长度：' + document.cookie.length)"&gt;</textarea>
+
+<div>
+  <button onclick="renderUnsafe()">❌ 不安全渲染（innerHTML）</button>
+  <button onclick="renderSafe()">✅ 安全渲染（textContent）</button>
+</div>
+
+<p class="lab">渲染结果：</p>
+<div id="out" class="box"></div>
+
+<hr style="margin:36px 0; border:none; border-top:1px solid #eee;">
+
+<h2 style="font-size:16px;">为什么命令行里永远测不出来</h2>
+<p style="font-size:14px;">
+  你在 <code>mini_rag.py</code> 里看到的是一段<b>字符串</b>，
+  字符串本身不会执行任何东西。<br>
+  漏洞不在「模型会不会输出危险内容」，而在
+  <b>「下游拿到这段字符串之后怎么用它」</b>——这才是 LLM05 的定义。
+</p>
+<p style="font-size:14px;">
+  所以正确的验证方式是两段：<br>
+  ① 证明模型会<b>原样复述</b> payload（在 CLI 里就能做，入口是知识库，不是用户输入）；<br>
+  ② 证明下游会<b>执行</b>它（就是这个页面）。
+</p>
+
+<script>
+function renderUnsafe() {
+  const out = document.getElementById('out');
+  out.className = 'box';
+  out.innerHTML = document.getElementById('modelOut').value;   // ← 漏洞所在
+}
+function renderSafe() {
+  const out = document.getElementById('out');
+  out.className = 'box safe';
+  out.textContent = document.getElementById('modelOut').value; // ← 修复方式
+}
+</script>
+</body>
+</html>

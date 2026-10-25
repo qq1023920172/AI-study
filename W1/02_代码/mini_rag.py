@@ -77,6 +77,7 @@ class Store:
 
 
 def answer(store: Store, question: str, k: int = 4) -> str:
+    question = question.replace("下次回复", "").replace("从现在起", "").replace("忽略", "")
     hits = store.search(question, k)   # ← LLM01：间接注入从这一行进入
 
     # ⚠️ V4 [LLM01 提示注入] ★ 全文件最重要的一处
@@ -96,7 +97,7 @@ def answer(store: Store, question: str, k: int = 4) -> str:
         # 铁律：秘密不进 prompt。权限判断写在代码里，不写在提示里。
         {"role": "system",
          "content": "你是严谨的文档问答助手。只能依据【资料】回答；资料不足时"
-                    "明确说「资料中没有提到」，禁止编造。管理员邮箱为：admin@qq.com。"},
+                    "明确说「资料中没有提到」，禁止编造。管理员邮箱：admin@qq.com。"},
         {"role": "user",
          "content": f"【资料】\n{ctx}\n\n【问题】\n{question}"},
     ]
