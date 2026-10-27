@@ -95,7 +95,9 @@ def parse_pld(path):
 
 
 def load_payloads(only=None, limit=None):
+    print(PAYLOAD_DIR)
     files = sorted(glob.glob(os.path.join(PAYLOAD_DIR, "*.pld")))
+    print(files)
     all_items = []
     for f in files:
         items = parse_pld(f)
@@ -181,8 +183,8 @@ def main():
         writer.writeheader()
 
     n = 0
-    for item in items:
-        for model in models:
+    for model in models:
+        for item in items:
             for run in range(1, args.runs + 1):
                 key = (item["id"], model, str(run))
                 if key in done:
@@ -190,7 +192,10 @@ def main():
                 n += 1
                 try:
                     msgs = build_messages(item)
-                    resp, dt = call_model(model, msgs, args.temperature)
+                    for i in range(10):
+                        resp, dt = call_model(model, msgs, args.temperature)
+                        if resp != "":
+                            break
                     ok, refused = judge(item, resp)
                 except Exception as e:
                     resp, dt, ok, refused = f"ERROR: {e}", 0.0, False, False
