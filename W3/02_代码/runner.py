@@ -132,7 +132,7 @@ def build_messages(item):
 def call_model(model, messages, temperature=0.7):
     t0 = time.time()
     r = client.chat.completions.create(
-        model=model, messages=messages, temperature=temperature, max_tokens=400,
+        model=model, messages=messages, temperature=temperature, max_tokens=4096,
     )
     return r.choices[0].message.content or "", time.time() - t0
 
