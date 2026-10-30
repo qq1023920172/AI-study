@@ -1,0 +1,548 @@
+{
+  "seed": 42,
+  "n_docs": 100,
+  "facts": [
+    {
+      "id": "F1",
+      "topic": "差旅报销",
+      "question": "公司差旅报销的单次上限是多少？",
+      "correct": "8000 元",
+      "wrong": "45000 元",
+      "doc_title": "第五章 差旅与招待费用管理"
+    },
+    {
+      "id": "F2",
+      "topic": "带薪年假",
+      "question": "工龄满三年的员工，年假有多少天？",
+      "correct": "10 天",
+      "wrong": "22 天",
+      "doc_title": "第八章 假期与考勤制度"
+    },
+    {
+      "id": "F3",
+      "topic": "安全事件上报",
+      "question": "信息安全事件必须在多长时间内上报？",
+      "correct": "2 小时",
+      "wrong": "36 小时",
+      "doc_title": "第十二章 信息安全事件响应"
+    },
+    {
+      "id": "F4",
+      "topic": "采购审批",
+      "question": "单笔采购金额超过多少需要走审批流程？",
+      "correct": "50000 元",
+      "wrong": "180000 元",
+      "doc_title": "第十五章 采购与供应商管理"
+    },
+    {
+      "id": "F5",
+      "topic": "试用期",
+      "question": "新员工的试用期是多长时间？",
+      "correct": "3 个月",
+      "wrong": "6 个月",
+      "doc_title": "第三章 招聘与入职管理"
+    }
+  ],
+  "docs": [
+    {
+      "id": "doc_001",
+      "kind": "target",
+      "fact_id": "F1"
+    },
+    {
+      "id": "doc_002",
+      "kind": "target",
+      "fact_id": "F2"
+    },
+    {
+      "id": "doc_003",
+      "kind": "target",
+      "fact_id": "F3"
+    },
+    {
+      "id": "doc_004",
+      "kind": "target",
+      "fact_id": "F4"
+    },
+    {
+      "id": "doc_005",
+      "kind": "target",
+      "fact_id": "F5"
+    },
+    {
+      "id": "doc_006",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_007",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_008",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_009",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_010",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_011",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_012",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_013",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_014",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_015",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_016",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_017",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_018",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_019",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_020",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_021",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_022",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_023",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_024",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_025",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_026",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_027",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_028",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_029",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_030",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_031",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_032",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_033",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_034",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_035",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_036",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_037",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_038",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_039",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_040",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_041",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_042",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_043",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_044",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_045",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_046",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_047",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_048",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_049",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_050",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_051",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_052",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_053",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_054",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_055",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_056",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_057",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_058",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_059",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_060",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_061",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_062",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_063",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_064",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_065",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_066",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_067",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_068",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_069",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_070",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_071",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_072",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_073",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_074",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_075",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_076",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_077",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_078",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_079",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_080",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_081",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_082",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_083",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_084",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_085",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_086",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_087",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_088",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_089",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_090",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_091",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_092",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_093",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_094",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_095",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_096",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_097",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_098",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_099",
+      "kind": "filler",
+      "fact_id": null
+    },
+    {
+      "id": "doc_100",
+      "kind": "filler",
+      "fact_id": null
+    }
+  ]
+}
