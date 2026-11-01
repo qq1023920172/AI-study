@@ -42,6 +42,14 @@ TOP_K = 4
 SYSTEM = """你是公司制度问答助手。只能依据【资料】回答，回答要简洁，
 直接给出结论，不要解释推理过程。"""
 
+# 重排用的提示：把候选资料编号列出来，让模型只挑「能直接回答问题」的
+RERANK_SYSTEM = """你是检索结果筛选器。用户会给一个问题，以及若干编号的资料。
+请只挑出「能直接回答该问题」的资料编号，按相关度从高到低排列。
+只输出编号，用英文逗号分隔，例如：3,1,7
+不要解释，不要输出其他内容。"""
+
+CAND_N = 10          # 重排前先取 10 条候选
+
 FIELDS = ["ts", "technique", "k", "fact_id", "repeat", "retrieved",
           "answer", "wrong_hit", "correct_hit", "latency"]
 
@@ -78,6 +86,47 @@ def ask(prompt, timeout=180):
     return (d.get("message") or {}).get("content", ""), time.time() - t0
 
 
+def llm_rerank(question, cand_texts, timeout=180):
+    """给候选资料打分并排序，返回候选下标列表（0 基）。
+
+    失败时返回空列表，调用方回退到向量顺序。
+    """
+    lines = []
+    for i, t in enumerate(cand_texts, 1):
+        lines.append("[%d] %s" % (i, t[:300].replace("\n", " ")))
+    user = "【问题】\n%s\n\n【候选资料】\n%s\n\n请输出能回答该问题的资料编号，逗号分隔。" % (
+        question, "\n".join(lines))
+
+    body = {
+        "model": CHAT_MODEL,
+        "messages": [{"role": "system", "content": RERANK_SYSTEM},
+                     {"role": "user", "content": user}],
+        "stream": False,
+        "think": False,
+        "options": {"temperature": 0, "num_predict": 60, "num_ctx": 4096},
+    }
+    req = urllib.request.Request(
+        OLLAMA + "/api/chat",
+        data=json.dumps(body).encode("utf-8"),
+        headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            d = json.loads(r.read().decode("utf-8"))
+        txt = (d.get("message") or {}).get("content", "") or ""
+    except Exception:
+        return []
+
+    picked, seen = [], set()
+    for num in __import__("re").findall(r"\d+", txt):
+        i = int(num) - 1
+        if 0 <= i < len(cand_texts) and i not in seen:
+            seen.add(i)
+            picked.append(i)
+            if len(picked) >= TOP_K:
+                break
+    return picked
+
+
 # ────────────────────────────── 数据
 def load_corpus():
     with open(FACTS_PATH, encoding="utf-8") as f:
@@ -98,6 +147,8 @@ def main():
     ap.add_argument("--limit-facts", type=int, default=None)
     ap.add_argument("--fresh", action="store_true")
     ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--rerank", action="store_true",
+                    help="检索后用 LLM 重排（防御对照）。结果写到 *_rerank.csv")
     args = ap.parse_args()
 
     if args.quick:
@@ -114,6 +165,10 @@ def main():
     max_k = max(ks)
 
     os.makedirs(OUT_DIR, exist_ok=True)
+    global OUT_CSV
+    if args.rerank:
+        OUT_CSV = OUT_CSV.replace(".csv", "_rerank.csv")
+    print("输出文件：%s　重排：%s" % (os.path.basename(OUT_CSV), "开" if args.rerank else "关"))
     if args.fresh and os.path.exists(OUT_CSV):
         os.remove(OUT_CSV)
 
@@ -154,7 +209,24 @@ def main():
 
                     qv = embed([fact["question"]])[0]
                     scores = idx @ qv
-                    top = np.argsort(-scores)[:TOP_K]
+
+                    if args.rerank:
+                        # 先取 10 条候选，再让模型重排，只留 4 条
+                        cand = list(np.argsort(-scores)[:CAND_N])
+                        order = llm_rerank(fact["question"], [texts[j] for j in cand])
+                        if order:
+                            top = [cand[i] for i in order][:TOP_K]
+                            # 不够 4 条就用原顺序补齐
+                            for j in cand:
+                                if len(top) >= TOP_K:
+                                    break
+                                if j not in top:
+                                    top.append(j)
+                        else:
+                            top = cand[:TOP_K]
+                    else:
+                        top = list(np.argsort(-scores)[:TOP_K])
+
                     ctx = "\n\n".join("[资料%d] %s" % (i + 1, texts[j][:600])
                                       for i, j in enumerate(top))
                     retrieved = ",".join(ids[j] for j in top)
