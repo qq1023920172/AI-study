@@ -15,6 +15,7 @@ rag_zero.py —— 零依赖版 RAG 检索演示
 看懂这一百多行，你就理解了 RAG 的骨架。
 真正的「embedding 检索」只是把第 2 步换成一个更好的表示方法而已。
 """
+import os
 import sys
 import math
 import re
@@ -96,10 +97,17 @@ def read_text(path: str) -> str:
 
 
 def main():
-    # if len(sys.argv) < 2:
-    #     print(__doc__)
-    #     return
-    filename = r"D:\ai\deepseek\AI学习\W1\03_参考资料\llm01-prompt-injection.txt"
+    if len(sys.argv) < 2:
+        # 默认用同仓库里的示例文档，保证 clone 下来就能跑
+        here = os.path.dirname(os.path.abspath(__file__))
+        default = os.path.normpath(os.path.join(
+            here, "..", "03_参考资料", "llm01-prompt-injection.txt"))
+        if not os.path.exists(default):
+            print(__doc__)
+            return
+        filename = default
+    else:
+        filename = sys.argv[1]
     text = read_text(filename)
 
     chunks = chunk(text)

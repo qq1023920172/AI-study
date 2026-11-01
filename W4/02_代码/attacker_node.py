@@ -18,6 +18,7 @@ attacker_node.py —— 攻击机这一端（在你这台 16G 的电脑上跑）
 """
 import argparse
 import csv
+import ipaddress
 import json
 import os
 import sys
@@ -25,6 +26,7 @@ import time
 import urllib.error
 import urllib.request
 from datetime import datetime
+from urllib.parse import urlparse
 
 from openai import OpenAI
 
@@ -62,6 +64,34 @@ def health(target, timeout=10):
             return json.loads(r.read().decode("utf-8"))
     except Exception as e:
         return {"error": str(e)}
+
+
+def check_target(url, allow_public=False):
+    """只允许测试本机或私有网段。
+
+    这是负责任研究工具的通行做法：默认封闭，公网目标必须显式解锁。
+    返回 (是否允许, 原因)。
+    """
+    host = (urlparse(url).hostname or "").strip()
+    if not host:
+        return False, "无法解析目标主机名"
+
+    if host in ("localhost", "localhost.localdomain"):
+        return True, ""
+
+    try:
+        ip = ipaddress.ip_address(host)
+    except ValueError:
+        # 域名：只放行 .local / .lan / .internal 这类内网后缀
+        if host.endswith((".local", ".lan", ".internal", ".home")):
+            return True, ""
+        return (allow_public,
+                "%s 不是 IP 地址，无法判定是否内网" % host)
+
+    if ip.is_loopback or ip.is_private or ip.is_link_local:
+        return True, ""
+
+    return (allow_public, "%s 是公网地址" % ip)
 
 
 def call_target(target, prompt, timeout=180, retry=1):
@@ -105,6 +135,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", default="http://192.168.0.122:8000",
                     help="靶机地址，例如 http://192.168.0.122:8000")
+    ap.add_argument("--allow-public", action="store_true",
+                    help="允许指向公网地址。默认禁止，仅用于你已获书面授权的目标")
     ap.add_argument("--attacker", default="deepseek-r1:14b")
     ap.add_argument("--iter", type=int, default=8)
     ap.add_argument("--limit", type=int, default=None)
@@ -124,6 +156,14 @@ def main():
             os.remove(OUT_CSV)
 
     # ── 起飞前检查
+    ok, why = check_target(args.target, args.allow_public)
+    if not ok:
+        raise SystemExit(
+            "拒绝执行：%s\n"
+            "  本项目仅用于测试自有环境（本机或私有网段）。\n"
+            "  如确需测试公网目标，请先确认已获得书面授权，再加 --allow-public。"
+            % why)
+
     h = health(args.target)
     if "error" in h:
         raise SystemExit(
